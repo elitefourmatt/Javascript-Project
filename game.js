@@ -1,16 +1,22 @@
-var canvas = document.getElementById("gameCanvas");
+var canvas = document.getElementById("breakoutCanvas");
 var ctx = canvas.getContext("2d");
-
 var ballRadius = 10;
+//position of ball moving
 var x = canvas.width/2;
 var y = canvas.height-30;
 var dx = 2;
 var dy = -2;
+
+//paddle settings
 var paddleHeight = 10;
-var paddleWidth = 65;
-var paddleX = (canvas.width-paddleWidth)/2;
+var paddleWidth = 95;
+var paddleXAxis = (canvas.width-paddleWidth)/2;
+
+//movment initial settings
 var rightPressed = false;
 var leftPressed = false;
+
+//number of Rows and Columns
 var brickRowCount = 6;
 var brickColumnCount = 3;
 var brickWidth = 75;
@@ -20,6 +26,7 @@ var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 var score = 0;
 
+//building brick field in 2d array
 var bricks = [];
 for(var c=0; c<brickColumnCount; c++) {
   bricks[c] = [];
@@ -77,11 +84,13 @@ function drawBall() {
 }
 function drawPaddle() {
   ctx.beginPath();
-  ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+  ctx.rect(paddleXAxis, canvas.height-paddleHeight, paddleWidth, paddleHeight);
   ctx.fillStyle = "#7B241C";
   ctx.fill();
   ctx.closePath();
 }
+
+//loops through all bricks and draws them to the screen
 function drawBricks() {
   for(var c=0; c<brickColumnCount; c++) {
     for(var r=0; r<brickRowCount; r++) {
@@ -99,8 +108,10 @@ function drawBricks() {
     }
   }
 }
+
+
 function drawScore() {
-  ctx.font = "16px Arial";
+  ctx.font = "16px Courier New";
   ctx.fillStyle = "#7B241C";
   ctx.fillText("Bricks Destroyed: "+score, 8, 20);
 }
@@ -108,11 +119,8 @@ function drawScore() {
 
 document.getElementById("myBtn").addEventListener("click", function(){
 
-  var background = new Image();
-background.src = "space.jpg";
-background.onload = function(){
-    ctx.drawImage(background,0,0);
-}
+
+//clear the canvas and drawing
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBricks();
@@ -121,6 +129,7 @@ function draw() {
   drawScore();
   collisionDetection();
 
+//so the ball doesn't leave the stage
   if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
     dx = -dx;
   }
@@ -128,7 +137,7 @@ function draw() {
     dy = -dy;
   }
   else if(y + dy > canvas.height-ballRadius) {
-    if(x > paddleX && x < paddleX + paddleWidth) {
+    if(x > paddleXAxis && x < paddleXAxis + paddleWidth) {
       dy = -dy;
     }
     else {
@@ -138,11 +147,13 @@ function draw() {
     }
   }
 
-  if(rightPressed && paddleX < canvas.width-paddleWidth) {
-    paddleX += 7;
+//paddle doesn't move off the screen and can move left and right
+
+  if(rightPressed && paddleXAxis < canvas.width-paddleWidth) {
+    paddleXAxis += 7;
   }
-  else if(leftPressed && paddleX > 0) {
-    paddleX -= 7;
+  else if(leftPressed && paddleXAxis > 0) {
+    paddleXAxis -= 7;
   }
 
   x += dx;
@@ -150,4 +161,8 @@ function draw() {
 }
 
 var interval = setInterval(draw, 10);
+
+
+
+
 });
