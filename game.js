@@ -1,5 +1,6 @@
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
+
 var ballRadius = 10;
 var x = canvas.width/2;
 var y = canvas.height-30;
@@ -104,6 +105,14 @@ function drawScore() {
   ctx.fillText("Bricks Destroyed: "+score, 8, 20);
 }
 
+
+document.getElementById("myBtn").addEventListener("click", function(){
+
+  var background = new Image();
+background.src = "space.jpg";
+background.onload = function(){
+    ctx.drawImage(background,0,0);
+}
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBricks();
@@ -141,3 +150,4 @@ function draw() {
 }
 
 var interval = setInterval(draw, 10);
+});
